@@ -1,0 +1,61 @@
+This is Cody a mini version of nginx (or at least what i want to do)
+
+
+current state - whats next - what should i do - etcetcetc
+
+
+
+Nginx is a master - worker aproach
+Its a server web that uses epoll as a way to avoid blocking i/o
+Making it from scratch means that i need the following things:
+
+
+master-worker aproach
+                have one master socket that redirects
+
+Socket creation
+                binding to a port
+                make it listen
+                accepting loop
+                reading from the socket
+
+
+Http parsing 
+                read the bytes of the socket
+                "tokenize them in a way"
+                parse them, see that its a correct http_request
+
+
+
+Following things    
+                respond with an http_response
+                use "caching layer"
+                socket keep-alive connection
+                (try using hash functions to caching 304 not changed or something)
+
+
+Compresion things
+                gzip, compress htmls or js files
+
+
+Security
+                Not allowing to go on root
+                DDos (some type of rate limiting)
+
+
+
+
+
+
+
+
+
+First steps: 
+
+1.  Master - worker socket aproach
+    Create the master socket 
+    create the strcuture and all for workers and master blablalb
+    make the fork
+    define finite number (can be passed as arg, or something but no need)
+
+    try everything.
