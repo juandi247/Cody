@@ -59,3 +59,84 @@ First steps:
     define finite number (can be passed as arg, or something but no need)
 
     try everything.
+
+
+
+
+
+
+2. Read and parse an http http_request
+
+it should have 
+    Method
+    Path 
+    Headers
+    body
+    keepAlive?
+
+
+
+
+Steps:
+    - Read until we reach the first \r \n 
+    READ_FIRST
+
+    -REad until we reach a double \r\n \r\n 
+    READ_HEADERS //todo: we need a way to know how to PARSE the headers, and interpret them later
+
+    -Read the body (if the header content length exists, we continue reading until we read all the bytes)
+
+
+
+
+    -Construct the http_request_t
+
+
+
+
+    
+
+
+STATES:
+READ_FIRST
+
+
+
+READ_HEADERS 
+
+READ_BODY
+
+
+READ_END
+    
+
+
+
+
+GET /index.html HTTP/1.1 \r\n
+Host: www.ejemplo.com \r\n
+User-Agent: Chrome/5.0 \r\n
+Accept: text/html \r\n
+ \r\n
+ \r\n
+
+
+
+STATE READ_FIRST
+
+GET /inde   -> BUFFER[GET /inde]
+
+x.html  -> BUFFER[GET /index.html ]
+
+HTTP/1.1  -> BUFFER[GET /index.html HTTP 1.1 \r\n]
+
+
+CHANGE STATE
+
+
+
+
+
+
+
+

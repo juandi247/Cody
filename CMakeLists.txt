@@ -13,6 +13,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 set(SOURCES
     src/main.c
     src/master.c
+    src/worker.c
 )
 
 

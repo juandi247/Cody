@@ -16,5 +16,5 @@ typedef struct{
 }master_t;
 
 int master_init(master_t *master, int port, int workerNumber);
-int master_run(master_t *master);
+void master_run(master_t *master);
 #endif //MASTER_H
