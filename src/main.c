@@ -5,7 +5,7 @@ int main(){
     //todo: read from the server.config file instead of hardcoded values
     printf("starting server .... \n");
     int port = 8090;
-    int workerNumber= 4;
+    int workerNumber= 1;
     master_t master;
 
 

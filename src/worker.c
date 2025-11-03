@@ -29,7 +29,7 @@ int worker_handle_accept(worker_t *worker, int client_fs){
         return -1;
     }
 
-    printf("Added new connection succesfully to epoll. \n");
+    printf("Added new connection succesfully to epoll worker: %i \n", worker->process_id);
 
     return 0;
 }
@@ -108,7 +108,7 @@ void worker_run(worker_t *worker) {
         // printf("EVENT TYPE %i \n", eventType);
         //? we received an accept because its on the socketfd from the server
         if (file_descriptor == worker->socketfd && (eventType & EPOLLIN)) {
-          printf("NEW CONEX on worker pid: %i \n", worker->process_id);
+          printf("CONEX: on worker pid: %i \n", worker->process_id);
           socklen_t lengthAddr= sizeof(client_addr);
           int client_socket =accept(worker->socketfd, (struct sockaddr *)&client_addr, &lengthAddr);
           if (client_socket == -1) {
@@ -119,23 +119,25 @@ void worker_run(worker_t *worker) {
         } else if(eventType & EPOLLIN) {
             //? We received READ EVENT FROM A CURRENT SOCKET
 
+            printf("Leemos del worker pid: %i \n-", worker->process_id); 
             //todo: i think this should be a malloc but later
             char myBuffer[READ_BUFFER_MAX];
-            printf("waiting to read someting \n"); 
+            // printf("waiting to read someting \n"); 
             //recv instead of read() because its spezialided for sockets and has more options!!! todo: see that more/
             int nbytes= recv(file_descriptor, &myBuffer, READ_BUFFER_MAX,0);
 
             if(nbytes>0){
-            printf("Finished READING the socket \n"); 
-            
+              printf("llegaron mas de 1 nbytes %i", nbytes);
             for (int i=0; i<nbytes; i++){
             printf("%c", myBuffer[i]);
             if (myBuffer[i]=='\n'){    
                 printf("\n Terminamos de leer \n \n");
                 break;
             }
-
         }
+            }else{
+
+              printf("no llego nada o lllego un error recv: %i",nbytes);
             }
           
 
