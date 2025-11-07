@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net"
+	"net/http"
 	"strconv"
 	"sync"
 	"time"
@@ -16,10 +18,29 @@ func main() {
 
 	for i := 1; i < 2; i++ {
 		wg.Add(1)
-		go test_connection(i, &wg)
+		// go test_connection(i, &wg)
+		go httpRequest(i, &wg)
 	}
 	wg.Wait()
 }
+
+
+func httpRequest(index int, wg *sync.WaitGroup){
+	defer func(){
+		wg.Done()
+	}()
+
+	fmt.Printf("vamos a tirar una request goroutine: %d \n" , index)
+	// time.Sleep(time.Second*2)
+_, err:= http.Get("http://localhost:8090/index.html")
+
+if err!=nil{
+	log.Fatal("error en la request", err)
+	return
+}
+
+}
+
 
 func test_connection(index int, wg *sync.WaitGroup) {
 
@@ -30,14 +51,17 @@ func test_connection(index int, wg *sync.WaitGroup) {
 		return
 	}
 
-	defer conn.Close()
+	defer func(){
+		conn.Close()
+		wg.Done()
+	}()
+	fmt.Printf("DIAl para la conex: %d done, vamos a escribir \n", index)
 
-	fmt.Printf("DIAl para la conex: %d done, vamos a escribir", index)
-
-	message := " message from goroutine" + strconv.Itoa(index) + "\n"
+	message := " message from goroutine: " + strconv.Itoa(index) + "\n"
 	//	time.Sleep(time.Second * 2)
 	bytesWritten, err := conn.Write([]byte(message))
 
+	
 	if err != nil {
 		fmt.Errorf("error", err)
 	}
@@ -47,8 +71,8 @@ func test_connection(index int, wg *sync.WaitGroup) {
 
 	}
 	time.Sleep(time.Second * 2)
-	bytesWritten, err = conn.Write([]byte("Segunda parte \n"))
+	secondMessage := "Segunda Parte de Goroutine: " + strconv.Itoa(index) + "\n"
+	bytesWritten, err = conn.Write([]byte(secondMessage))
 
 	fmt.Println("Written goroutine ", index)
-	wg.Done()
 }

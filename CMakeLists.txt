@@ -14,6 +14,8 @@ set(SOURCES
     src/main.c
     src/master.c
     src/worker.c
+    src/http.c
+    src/fsmParser.c
 )
 
 
