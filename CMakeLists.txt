@@ -22,3 +22,8 @@ set(SOURCES
 add_executable(cody ${SOURCES})
 #private bbecause its only for our src files, not dependencies
     target_compile_options(cody PRIVATE -Wall -Wextra -O2)
+
+
+set_target_properties(cody PROPERTIES
+    COMPILE_FLAGS "-g"
+)

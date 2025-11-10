@@ -32,7 +32,7 @@ func httpRequest(index int, wg *sync.WaitGroup){
 
 	fmt.Printf("vamos a tirar una request goroutine: %d \n" , index)
 	// time.Sleep(time.Second*2)
-_, err:= http.Get("http://localhost:8090/index.html")
+_, err:= http.Get("http://localhost:8080/index.html")
 
 if err!=nil{
 	log.Fatal("error en la request", err)

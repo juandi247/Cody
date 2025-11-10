@@ -41,15 +41,17 @@ int worker_handle_accept(worker_t *worker, int client_fs) {
   printf("Added new connection succesfully to epoll worker: %i \n",
          worker->process_id);
 printf("aholl \n");
-printf("client count %i", worker->clientCount);
+printf("client count %i \n", worker->clientCount);
 client_conn_t *newClient = &worker->clients[worker->clientCount];
 printf("alo?=? \n");
+if (newClient==NULL){
+  printf("ES NULL WTF");
+}
+printf("clientCount=%i MAX_CONNECTIONS=%d\n", worker->clientCount, MAX_CONNECTIONS);
 newClient->fd= client_fs;
 newClient->buffer= malloc(INITIAL_BUFFER_SIZE);
-printf("alo2=? \n");
   newClient->bufCurrSize=0;
   newClient->bufCapacity= INITIAL_BUFFER_SIZE;
-printf("alo3=? \n");
   parser_init(&newClient->parser);
 request_init(&newClient->client_request);
 worker->clientCount++;
@@ -61,6 +63,7 @@ printf("Terminamos! volvemos al epoll \n");
 
 
 int worker_init(worker_t *worker, int socket_fs) {
+  printf("vamos a hacer init de un worker \n");
   memset(worker, 0, sizeof(worker_t));
   worker->socketfd = socket_fs;
   worker->epollfd = epoll_create1(0);
@@ -91,6 +94,11 @@ int worker_init(worker_t *worker, int socket_fs) {
   }
 
   worker->clients= calloc(MAX_CONNECTIONS, sizeof(client_conn_t));
+
+  if (worker->clients ==NULL){
+    perror("ERROR allocating memory on the clients array for the workers");
+    return -1;
+  }
   return 0;
 }
 

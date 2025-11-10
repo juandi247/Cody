@@ -11,7 +11,7 @@
 
 #define MAX_EVENTS 4096
 #define INITIAL_BUFFER_SIZE 8012
-#define MAX_CONNECTIONS 100000
+#define MAX_CONNECTIONS 1000
 
 typedef struct {
     int fd;

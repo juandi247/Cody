@@ -12,6 +12,7 @@ typedef enum {
     READING_HEADER_VALUE,
     READING_BODY,
     ERROR,
+    PRINT_REQUEST,
 }PARSER_STATES;
 
 typedef struct{
